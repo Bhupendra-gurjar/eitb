@@ -25,19 +25,15 @@ class basic_page_node extends ResourceBase {
    */
   public function get() {
     $response = [];
-    $nid = \Drupal::entityQuery('node')
+    $nids = \Drupal::entityQuery('node')
       ->condition('type', 'page')
       ->accessCheck(FALSE)
       ->execute();
-    //load first node
-    $node_id = reset($nid);
   
-    if ($node_id) {
-      $node = \Drupal\node\Entity\Node::load($node_id);
+    foreach ($nids as $nid) {
+      $node = \Drupal\node\Entity\Node::load($nid);
       $title = $node->get('title')->value;
-      $additional_data = [
-        'title' => $title,
-      ];
+
       $paragraph_field_items = $node->get('field_content_details')->getValue();
       foreach ($paragraph_field_items as $paragraph_item) {
         $paragraph = \Drupal\paragraphs\Entity\Paragraph::load($paragraph_item['target_id']);
@@ -46,18 +42,14 @@ class basic_page_node extends ResourceBase {
         $image = \Drupal::service('file_url_generator')->generateAbsoluteString($paragraph->field_image->entity->getFileUri());
         
         $response[] = [
+          'title' => $title,
           'content_title' => $content_title,
           'description' => $description,
           'image' => $image,
         ];
       }
-
-     $response = array_merge($additional_data,$response);
     }
   
     return new ResourceResponse($response);
   }
-}  
-
-
-
+}

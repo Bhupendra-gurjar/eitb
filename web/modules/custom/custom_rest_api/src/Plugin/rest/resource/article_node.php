@@ -25,15 +25,13 @@ class article_node extends ResourceBase {
    */
   public function get() {
     $response = [];
-    $nid = \Drupal::entityQuery('node')
+    $nids = \Drupal::entityQuery('node')
       ->condition('type', 'article')
       ->accessCheck(FALSE)
       ->execute();
-      //load first node
-    $node_id = reset($nid);
-
-    if ($node_id) {
-      $node = \Drupal\node\Entity\Node::load($node_id);
+  
+    foreach ($nids as $nid) {
+      $node = \Drupal\node\Entity\Node::load($nid);
       $title = $node->get('title')->value;
       $paragraph_field_items = $node->get('field_user_data')->getValue();
       foreach ($paragraph_field_items as $paragraph_item) {

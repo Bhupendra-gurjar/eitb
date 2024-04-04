@@ -25,14 +25,13 @@ class blog_node extends ResourceBase {
    */
   public function get() {
     $response = [];
-    $nid = \Drupal::entityQuery('node')
-    ->condition('type', 'blog')
-    ->accessCheck(FALSE)
-    ->execute();
-    $node_id = reset($nid);
-
-    if($node_id) {
-      $node = \Drupal\node\Entity\Node::load($node_id);
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'blog')
+      ->accessCheck(FALSE)
+      ->execute();
+  
+    foreach ($nids as $nid) {
+      $node = \Drupal\node\Entity\Node::load($nid);
       $title = $node->get('title')->value;
       $paragraph_field_items = $node->get('field_blog_details')->getValue();
       foreach ($paragraph_field_items as $paragraph_item) {
