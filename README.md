@@ -3,7 +3,7 @@ How to setup :
 
 1. Please Create a clone from *main* branch or using this link 'https://github.com/Bhupendra-gurjar/eitb.git'.
 
-2. I have attached a sql file named **ec2userdb.sql** . Please import this db to your db.
+2. I have attached a sql file named **ec2usernew.sql** . Please import this db to your db.
 3. Then open our site browser and login using below **credentials**
    Username: admin
    Password: admin 
